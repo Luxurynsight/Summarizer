@@ -1,5 +1,6 @@
-import * as SummaryTool from 'node-summary';
-import * as SummaryToolAlt from 'node-summarizer';
+import * as nodeSummary from 'node-summary';
+import * as nodeSummarizer from 'node-summarizer';
+
 import * as http from 'http';
 
 const config = {
@@ -9,11 +10,11 @@ const config = {
 const getSummary = (title, text, method) => {
 	const methods = {
 		nodeSummary: (resolve, reject) => {
-			SummaryTool.summarize((title||''), (text||''), (err, summary, dict) => {
+			nodeSummary.summarize((title||''), (text||''), (err, summary, dict) => {
 				// if (err) { return respond(400, `Summarize: ${err.message}`, res); }
 				if (err) { return reject(`Summarize: ${err.message}`); }
 		
-				SummaryTool.getSortedSentences((text||''), 5, (err, sortedSentences) => {
+				nodeSummary.getSortedSentences((text||''), 5, (err, sortedSentences) => {
 					// if (err) { return respond(400, `getSortedSentences: ${err.message}`, res); }
 					if (err) { return reject(`getSortedSentences: ${err.message}`); }
 		
@@ -27,7 +28,7 @@ const getSummary = (title, text, method) => {
 			});
 		},
 		nodeSummarizer: (resolve, reject) => {
-			let summarizerManager = SummaryToolAlt.SummarizerManager;
+			let summarizerManager = nodeSummarizer.SummarizerManager;
 			let summarizer = new summarizerManager(text, 4);
 
 			return resolve({
