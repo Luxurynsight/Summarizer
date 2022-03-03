@@ -1,3 +1,4 @@
+import fetch, { FormData, File, fileFrom } from 'node-fetch'
 import * as nodeSummary from 'node-summary';
 import * as nodeSummarizer from 'node-summarizer';
 
@@ -36,6 +37,24 @@ const getSummary = (title, text, method) => {
 				extra: {
 					summarizer
 				}
+			});
+		},
+		deepAI: async (resolve, reject) => {
+			const body = new FormData();
+			body.append('text', text);
+
+			const response = await fetch('https://api.deepai.org/api/summarization', {
+				method: 'POST',
+				body: body,
+				headers: {
+					'api-key': 'quickstart-QUdJIGlzIGNvbWluZy4uLi4K'
+				}
+			});
+
+			const responseJson = await response.json();
+			resolve({
+				summary: responseJson.output,
+				extra: {responseJson}
 			});
 		}
 	};
